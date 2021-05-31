@@ -37,12 +37,20 @@ const app = {
       .map(
         (item) => `
     <tr>
-    <td><img class="product-img" src="${item.imageUrl} alt="${item.title}"</td>
+    <td><img class="product-img" src="${item.imageUrl}" alt="${
+          item.title
+        }"></td>
     <td>${item.title}</td>
     <td>${item.origin_price}</td>
     <td>${item.price}</td>
-    <td>${item.is_enabled}</td>
-    <td><button data-id="${item.id}" id="deleteBtn" type="button">刪除商品</button></td>
+    <td>
+    <span class="${item.is_enabled ? 'text-success' : 'text-secondary'}">
+    ${item.is_enabled ? '啟用' : '未啟用'}
+    </span>
+    </td>
+    <td><button data-id="${
+      item.id
+    }" id="deleteBtn" type="button">刪除商品</button></td>
   </tr>`
       )
       .join('') // 加入 join('') 去掉中間逗號
@@ -89,7 +97,8 @@ const app = {
         if (res.data.success) {
           console.log('確認使用者仍持續登入')
         } else {
-          console.log('非使用者本人')
+          alert('非使用者本人')
+          windows.location = './index.html'
         }
       })
       .catch((err) => {

@@ -29,7 +29,7 @@ function login(e) {
           expired
         )}; path=/`
         // 跳轉至 products.html 頁面
-        window.location = 'products.html'
+        window.location = './products.html'
         console.log(res)
       } else {
         // 輸入資料錯誤報錯提醒
