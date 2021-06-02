@@ -388,7 +388,7 @@ app.component('productModal',{
   </div>`,
   methods: {
     createImages() {
-      this.tempProduct.imagesUrl = ['']
+      this.whereProduct.imagesUrl = ['']
     },
   }
 })
