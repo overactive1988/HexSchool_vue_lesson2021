@@ -168,7 +168,7 @@ const app = createApp({
 // 商品 Modal
 app.component('productModal',{
   props: {
-    tempProduct: {
+    anyName: {
       type: Object, // 驗證型別
       default(){
         return {
@@ -207,21 +207,21 @@ app.component('productModal',{
                   type="text"
                   class="form-control"
                   placeholder="請輸入圖片連結"
-                  v-model.trim="tempProduct.imageUrl"
+                  v-model.trim="anyName.imageUrl"
                 />
                 <img
                   class="img-fluid my-3"
-                  :src="tempProduct.imageUrl"
-                  :alt="tempProduct.title"
+                  :src="anyName.imageUrl"
+                  :alt="anyName.title"
                 />
               </div>
             </div>
             <div class="mb-1">多圖新增</div>
             <!-- 大寫開頭 建構函式 -->
-            <div v-if="Array.isArray(tempProduct.imagesUrl)">
+            <div v-if="Array.isArray(anyName.imagesUrl)">
               <div
                 class="mb-4"
-                v-for="(item,index) in tempProduct.imagesUrl"
+                v-for="(item,index) in anyName.imagesUrl"
                 :key="'addImage'+index"
               >
                 <div class="form-group">
@@ -230,13 +230,13 @@ app.component('productModal',{
                     type="text"
                     class="form-control"
                     placeholder="請輸入圖片連結"
-                    v-model="tempProduct.imagesUrl[index]"
+                    v-model="anyName.imagesUrl[index]"
                   />
                   <img class="img-fluid my-3" :src="item" alt />
                   <div class="mb2">
                     <button
                       class="btn btn-outline-danger btn-sm d-block w-100"
-                      @click="tempProduct.imagesUrl.splice(index,1)"
+                      @click="anyName.imagesUrl.splice(index,1)"
                     >
                       刪除圖片
                     </button>
@@ -245,11 +245,11 @@ app.component('productModal',{
               </div>
               <div
                 class="mt-4"
-                v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length-1]"
+                v-if="!anyName.imagesUrl.length || anyName.imagesUrl[anyName.imagesUrl.length-1]"
               >
                 <button
                   class="btn btn-outline-primary btn-sm d-block w-100"
-                  @click="tempProduct.imagesUrl.push('')"
+                  @click="anyName.imagesUrl.push('')"
                 >
                   新增圖片
                 </button>
@@ -274,7 +274,7 @@ app.component('productModal',{
                 type="text"
                 class="form-control"
                 placeholder="請輸入標題"
-                v-model.trim="tempProduct.title"
+                v-model.trim="anyName.title"
               />
             </div>
 
@@ -286,7 +286,7 @@ app.component('productModal',{
                   type="text"
                   class="form-control"
                   placeholder="請輸入分類"
-                  v-model="tempProduct.category"
+                  v-model="anyName.category"
                 />
               </div>
               <div class="form-group col-md-6">
@@ -296,7 +296,7 @@ app.component('productModal',{
                   type="text"
                   class="form-control"
                   placeholder="請輸入單位"
-                  v-model="tempProduct.unit"
+                  v-model="anyName.unit"
                 />
               </div>
             </div>
@@ -310,7 +310,7 @@ app.component('productModal',{
                   min="0"
                   class="form-control"
                   placeholder="請輸入原價"
-                  v-model.number="tempProduct.origin_price"
+                  v-model.number="anyName.origin_price"
                 />
               </div>
               <div class="form-group col-md-6">
@@ -321,7 +321,7 @@ app.component('productModal',{
                   min="0"
                   class="form-control"
                   placeholder="請輸入售價"
-                  v-model.number="tempProduct.price"
+                  v-model.number="anyName.price"
                 />
               </div>
             </div>
@@ -334,7 +334,7 @@ app.component('productModal',{
                 type="text"
                 class="form-control"
                 placeholder="請輸入產品描述"
-                v-model.trim="tempProduct.description"
+                v-model.trim="anyName.description"
               >
               </textarea>
             </div>
@@ -345,7 +345,7 @@ app.component('productModal',{
                 type="text"
                 class="form-control"
                 placeholder="請輸入說明內容"
-                v-model.trim="tempProduct.content"
+                v-model.trim="anyName.content"
               >
               </textarea>
             </div>
@@ -357,7 +357,7 @@ app.component('productModal',{
                   type="checkbox"
                   :true-value="1"
                   :false-value="0"
-                  v-model="tempProduct.is_enabled"
+                  v-model="anyName.is_enabled"
                 />
                 <label class="form-check-label" for="is_enabled"
                   >是否啟用</label
