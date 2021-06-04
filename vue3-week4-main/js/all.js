@@ -302,6 +302,7 @@ app.component("productModal", {
       axios
         .post(`${this.url}/api/${this.path}/admin/upload`, formData)
         .then((res) => {
+          console.log(res);
           this.product.imageUrl = res.data.imageUrl;
         });
     },
