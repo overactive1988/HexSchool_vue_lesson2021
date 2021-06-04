@@ -38,9 +38,9 @@ const app = {
         })
     },
   },
-  created() {
-    // 元件生成，必定會執行的項目
-  },
+  // created() {
+  //   // 元件生成，必定會執行的項目
+  // },
 }
 
 Vue.createApp(app).mount('#app')

@@ -62,7 +62,7 @@ const app = createApp({
         })
     },
     // 取得產品列表
-    getData(num = 1) { // 參數預設值
+    getData(num = this.pagination.current_page || 1) { // 參數預設值
       axios
         .get(`${baseUrl}/api/${apiPath}/admin/products?page=${num}`)
         .then((res) => {
@@ -110,23 +110,20 @@ const app = createApp({
           break
         case 'edit':
           // 因為傳參考特性會連動到資料，因此將資料進行淺層複製
-          this.tempProduct = { ...item }
+          this.getData()
+          this.tempProduct = { ...item}
           this.isNew = false
           productModal.show()
           break
         case 'delete':
           // 因為傳參考特性會連動到資料，因此將資料進行淺層複製
-          this.tempProduct = { ...item }
+          this.tempProduct = { ...item}
           // Modal需要拿到 title 和刪除按鈕時需要獲得 id
           delProductModal.show()
           break
         default:
           break
       }
-    },
-    // 新增陣列圖片
-    createImages() {
-      this.tempProduct.imagesUrl = ['']
     },
     // 於modal內按下確認按鈕時觸發
     updateProduct(tempProduct) {
@@ -159,9 +156,9 @@ const app = createApp({
       })
     },
   },
-  created() {
-    // 元件生成，必定會執行的項目
-  },
+  // created() {
+  //   // 元件生成，必定會執行的項目
+  // },
 })
 
 // 定義全域元件 須放置在 createApp 後方，mount之前
@@ -202,8 +199,9 @@ app.component('productModal',{
           <div class="col-sm-4">
             <div class="mb-1">
               <div class="form-group">
-                <label for="imageUrl">輸入圖片網址</label>
+                <label class="text-light bg-secondary mb-2 py-1 px-2" for="mainImageUrl">請輸入主圖片網址</label>
                 <input
+                  id="mainImageUrl"
                   type="text"
                   class="form-control"
                   placeholder="請輸入圖片連結"
@@ -215,8 +213,16 @@ app.component('productModal',{
                   :alt="whereProduct.title"
                 />
               </div>
+
+              <div>
+              <label class="btn btn-outline-success btn-sm d-block w-100 mt-3">
+                <input id="upload_img" style="display:none;" type="file" @change="uploadMainImgage">
+                上傳圖片
+              </label>
+              </div>
+
             </div>
-            <div class="mb-1">多圖新增</div>
+            <div class="mt-4 mb-1">多圖新增</div>
             <!-- 大寫開頭 建構函式 -->
             <div v-if="Array.isArray(whereProduct.imagesUrl)">
               <div
@@ -225,14 +231,23 @@ app.component('productModal',{
                 :key="'addImage'+index"
               >
                 <div class="form-group">
-                  <label for="imageUrl">輸入圖片網址</label>
+                  <label class="text-light bg-secondary mb-2 py-1 px-2" for="subImageUrl">請輸入副圖片網址</label>
                   <input
+                    id="subImageUrl"
                     type="text"
                     class="form-control"
                     placeholder="請輸入圖片連結"
                     v-model="whereProduct.imagesUrl[index]"
                   />
                   <img class="img-fluid my-3" :src="item" alt />
+
+                    <div>
+                    <label class="btn btn-outline-success btn-sm d-block w-100 my-3">
+                      <input id="upload_img" style="display:none;" type="file" @change="uploadSubImgage">
+                      上傳圖片
+                    </label>
+                    </div>
+
                   <div class="mb2">
                     <button
                       class="btn btn-outline-danger btn-sm d-block w-100"
@@ -256,12 +271,12 @@ app.component('productModal',{
               </div>
             </div>
             <div v-else>
-              <div class="mb-2">
+              <div class="mt-4 mb-2">
                 <button
                   class="btn btn-outline-primary btn-sm d-block w-100"
                   @click="createImages"
                 >
-                  新增(陣列)圖片
+                  新增圖片
                 </button>
               </div>
             </div>
@@ -387,8 +402,37 @@ app.component('productModal',{
   </div>
   </div>`,
   methods: {
+    // 新增陣列圖片
     createImages() {
       this.whereProduct.imagesUrl = ['']
+    },
+    uploadMainImgage(e) {
+      console.dir(e);
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file-to-upload", file);
+      axios
+        .post(`${baseUrl}/api/${apiPath}/admin/upload`, formData)
+        .then((res) => {
+          console.log(res);
+          this.whereProduct.imageUrl = res.data.imageUrl;
+        }).catch((err=>{
+          console.log(err);
+        }));
+    },
+    uploadSubImgage(e) {
+      console.dir(e);
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file-to-upload", file);
+      axios
+        .post(`${baseUrl}/api/${apiPath}/admin/upload`, formData)
+        .then((res) => {
+          console.log(res);
+          this.whereProduct.imagesUrl[this.whereProduct.imagesUrl.length-1]= res.data.imageUrl;
+        }).catch((err=>{
+          console.log(err);
+        }));
     },
   }
 })
